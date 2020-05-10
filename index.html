@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script>
+            
+            $(document).ready(function() {
+                $('#label').text("Some Text");
+                $('#button').click(() => {
+                    alert("Clicked!");
+                } );
+
+
+            });
+        </script>
+       
+        
+    </head>
+    <body>
+        <div id="label"></div> 
+        <button id = "button" type="button">Click Me</button>
+
+        <script>
+            var label = document.getElementById('label');
+            var button = document.getElementById('button');
+            label.innerText = "Some Text";
+            // button.onclick = function() {
+            //     alert('Clicked!');
+            // }
+
+
+            
+        </script>
+        
+    </body>
+</html>
