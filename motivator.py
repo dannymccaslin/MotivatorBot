@@ -2,6 +2,7 @@ import random
 import time
 import tweepy
 import pandas
+import logging
 from config import consumer_key, consumer_secret, access_token, access_token_secret
 
 #Declare variables
@@ -9,6 +10,14 @@ timer = 10800 # three hours
 df = pandas.read_csv('quotes.csv', delimiter='*')
 index = df.index
 number_of_rows = len(index)
+
+logger = logging.getLogger('MotivatorBot')
+hdlr = logging.FileHandler('./motivatorbot.log')
+formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+hdlr.setFormatter(formatter)
+logger.addHandler(hdlr) 
+# logger.setLevel(logging.info)
+
 
 # authenticate the consumer key and secret
 auth = tweepy.OAuthHandler(consumer_key,consumer_secret)
@@ -48,7 +57,7 @@ while True:
         quoteString += getUser()
 
     quoteString +=  getQuote()
-    sleepSecs = random.randint(0,timer)
+    sleepSecs = random.randint(600,timer)
     print(quoteString)
     print(sleepSecs)
     #Try the API Call. One possible error is 187, which is an error coming from Twitter that limits tweeting the same tweet out multiple times. 
@@ -57,9 +66,11 @@ while True:
     # to none, and even if it does it will just keep trying quotes until it gets something that works.
     try:
         api.update_status(status = quoteString)
+        logging.info('SUCCESS! - %s', quoteString)
     except tweepy.TweepError as e:
+        logging.error(e.reason)
         print('Error Code', e.api_code)
-        print('Reason', e.reason)
+        print('Reason ', e.reason)
         continue
 
     
